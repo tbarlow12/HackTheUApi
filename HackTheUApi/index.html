@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Hardware App</title>
+</head>
+<body>
+    Tanner
+  <div>
+    <h2>All Hardware</h2>
+    <ul id="hardwares" />
+  </div>
+  <div>
+    <h2>Search by ID</h2>
+    <input type="text" id="hardId" size="5" />
+    <input type="button" value="Search" onclick="find();" />
+    <p id="hardware" />
+  </div>
+
+    <form id="saveHardwareForm" method="post">
+        <h3>Create a new Hardware</h3>
+        <p>
+            <label for="hardwareId">Hardware Id:</label>
+            <input type="text" name="Id" />
+        </p>
+        <p>
+            <label for="hardwaretName">Hardware Name:</label>
+            <input type="text" name="Name" />
+        </p>
+        <input type="button" id="saveHardware" value="Save" />
+    </form>
+
+    
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+  <script>
+    var uri = 'api/hardware';
+
+    $(document).ready(function () {
+      // Send an AJAX request
+      $.getJSON(uri)
+          .done(function (data) {
+            // On success, 'data' contains a list of products.
+            $.each(data, function (key, item) {
+              // Add a list item for the product.
+              $('<li>', { text: formatItem(item) }).appendTo($('#hardwares'));
+            });
+          });
+    });
+
+    function formatItem(item) {
+      return item.Name + ': $' + item.Price;
+    }
+
+    function find() {
+      var id = $('#hardId').val();
+      $.getJSON(uri + '/' + id)
+          .done(function (data) {
+            $('#hardwares').text(formatItem(data));
+          })
+          .fail(function (jqXHR, textStatus, err) {
+            $('#hardwares').text('Error: ' + err);
+          });
+    }
+
+    $('#saveHardware').click(function () {
+        $.post("api/hardware",
+              $("#saveHardwareForm").serialize(),
+              function (value) {
+                  $('#hardwares').append('<li>' + value.Name + '</li>');
+              },
+              "json"
+        );
+    });
+
+
+
+
+  </script>
+</body>
+</html>
