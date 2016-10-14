@@ -11,7 +11,7 @@ using System.Web;
 
 namespace HackTheUApi.Controllers
 {
-    [RoutePrefix("api/hacker")]
+    [RoutePrefix("api/hackers")]
     public class HackerController : ApiController
     {
         HackerRepository hackerRepository;
