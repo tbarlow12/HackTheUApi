@@ -118,14 +118,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\HackerController.cs" />
     <Compile Include="Controllers\HardwareController.cs" />
+    <Compile Include="Controllers\TeamController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Hacker.cs" />
     <Compile Include="Models\Hardware.cs" />
+    <Compile Include="Models\Team.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\HackerRepository.cs" />
     <Compile Include="Services\HardwareRepository.cs" />
+    <Compile Include="Services\TeamRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

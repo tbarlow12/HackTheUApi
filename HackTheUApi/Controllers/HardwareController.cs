@@ -4,11 +4,14 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.UI;
 using HackTheUApi.Models;
 using HackTheUApi.Services;
+using System.Web;
 
 namespace HackTheUApi.Controllers
 {
+    [RoutePrefix("api/hardware")]
     public class HardwareController : ApiController
     {
         HardwareRepository hardwareRepository;
@@ -18,33 +21,53 @@ namespace HackTheUApi.Controllers
             hardwareRepository = new HardwareRepository();
         }
         // GET: api/Hardware
+        [Route("")]
         public IEnumerable<Hardware> Get()
         {
-            return hardwareRepository.GetAllHardware();
+            var request = HttpContext.Current.Request;
+            string name = request.QueryString["name"];
+            string category = request.QueryString["category"];
+            string owner = request.QueryString["owner"];
+            return hardwareRepository.GetHardware(name,category,owner);
         }
-
         // GET: api/Hardware/5
+        [Route("{id:int}")]
         public Hardware Get(int id)
         {
             return hardwareRepository.GetHardware(id);
         }
 
-        // POST: api/Hardware
-        public void Post([FromBody]Hardware value)
+        [Route("available")]
+        public IEnumerable<Hardware> GetAvailable()
         {
-            hardwareRepository.InsertNewHardware(value);
+            return hardwareRepository.GetByAvailability(true);
+        }
+
+        [Route("checkedout")]
+        public IEnumerable<Hardware> GetCheckedOut()
+        {
+            return hardwareRepository.GetByAvailability(false);
+        }
+
+        // POST: api/Hardware
+        [Route("")]
+        public bool Post([FromBody]Hardware value)
+        {
+            return hardwareRepository.InsertNewHardware(value);
         }
 
         // PUT: api/Hardware/5
-        public void Put(int id, [FromBody]Hardware value)
+        [Route("{id:int}")]
+        public bool Put(int id, [FromBody]Hardware value)
         {
-            hardwareRepository.UpdateHardware(id, value);
+            return hardwareRepository.UpdateHardware(id, value);
         }
 
         // DELETE: api/Hardware/5
-        public void Delete(int id)
+        [Route("{id:int}")]
+        public bool Delete(int id)
         {
-            hardwareRepository.DeleteHardware(id);
+            return hardwareRepository.DeleteHardware(id);
         }
     }
 }

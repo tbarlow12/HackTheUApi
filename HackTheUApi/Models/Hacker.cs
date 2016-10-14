@@ -9,8 +9,9 @@ namespace HackTheUApi.Models
     {
         public int Id { get; set; }
         public string First { get; set; }
-        public int Last { get; set; }
+        public string Last { get; set; }
         public string Email { get; set; }
+        public int Team { get; set; }
         public bool CheckedIn { get; set; }
         public bool Present { get; set; }
 
